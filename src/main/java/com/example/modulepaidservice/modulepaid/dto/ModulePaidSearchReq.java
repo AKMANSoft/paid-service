@@ -11,20 +11,18 @@ import javax.validation.constraints.NotBlank;
 @AllArgsConstructor
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class ModulePaidReq {
+public class ModulePaidSearchReq {
 
-    @NotBlank
     String orderNo;
 
-    @NotBlank
     String clientTin;
 
-    @NotBlank
     String deviceNo;
 
-    @NotBlank
     String link;
 
     String status;
+
+    String date;
 
 }

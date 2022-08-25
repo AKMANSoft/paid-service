@@ -1,16 +1,16 @@
 package com.example.modulepaidservice.modulepaid.response;
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import lombok.experimental.FieldDefaults;
+
+import java.time.Instant;
 
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
+@Builder
 public class ModulePaidRes {
 
     Long id;
@@ -24,6 +24,10 @@ public class ModulePaidRes {
     String link;
 
     String date;
+
+    Instant createdDate;
+
+    Instant lastModifiedDate;
 
     String status;
 

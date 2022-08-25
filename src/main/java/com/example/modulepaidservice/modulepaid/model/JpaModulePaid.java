@@ -25,6 +25,8 @@ public class JpaModulePaid extends BaseModel{
 
     String link;
 
+    String date;
+
     String status;
 
 }
