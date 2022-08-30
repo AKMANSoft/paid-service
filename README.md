@@ -12,6 +12,7 @@ This README would normally document whatever steps are necessary to get your app
 * Step 1: mvn clean install
 * Step 2: mvn spring-boot:run
 * Step 3: In any browser call : http://localhost:8080
+* Login with account : admin/PasSwoRd0101
 
 * Step 4: Call API create client info
 Public API :

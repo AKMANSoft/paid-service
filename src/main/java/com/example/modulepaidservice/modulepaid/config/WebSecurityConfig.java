@@ -27,7 +27,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected UserDetailsService userDetailsService() {
         UserDetails user = User
                 .withUsername("admin")
-                .password("$2a$10$2klcmmphNyJRsqof6zEQCu5hdkPz9SQ92Ys12K8Scj8x59.b0qQ2.")
+                .password("$2a$10$jj9Sww6XPfJdb3ZysKhF7Oemjky9U7pTlBu.0U82S06Lr09Zjth6q")
                 .roles("ADMIN")
                 .build();
 
