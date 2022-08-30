@@ -17,7 +17,7 @@ public class ModulePaidController {
     private final ModulePaidService modulePaidService;
 
     @PostMapping
-    public ResponseEntity<ModulePaidRes> query(@RequestBody @Validated ModulePaidReq req) {
+    public ResponseEntity<ModulePaidRes> create(@RequestBody @Validated ModulePaidReq req) {
         return new ResponseEntity<>(modulePaidService.create(req), HttpStatus.OK);
     }
 

@@ -2,9 +2,9 @@ package com.example.modulepaidservice.modulepaid.service;
 
 import com.example.modulepaidservice.modulepaid.dto.ModulePaidReq;
 import com.example.modulepaidservice.modulepaid.dto.ModulePaidSearchReq;
+import com.example.modulepaidservice.modulepaid.dto.ModulePaidUpdateReq;
 import com.example.modulepaidservice.modulepaid.response.ModulePaidRes;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 
 public interface ModulePaidService {
 
@@ -12,8 +12,9 @@ public interface ModulePaidService {
 
     ModulePaidRes get(String clientTin);
 
-    Page<ModulePaidRes> search(ModulePaidSearchReq req, Integer pageNo, Integer pageSize, String sort);
+    Page<ModulePaidRes> search(ModulePaidSearchReq req, Integer pageNo, Integer pageSize, String sort, String sortDir);
 
-    ModulePaidRes update(Long id, String status);
+    ModulePaidRes update(ModulePaidUpdateReq req);
 
+    ModulePaidRes get(Long id);
 }

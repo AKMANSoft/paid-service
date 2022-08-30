@@ -2,6 +2,7 @@ package com.example.modulepaidservice.modulepaid.service.impl;
 
 import com.example.modulepaidservice.modulepaid.dto.ModulePaidReq;
 import com.example.modulepaidservice.modulepaid.dto.ModulePaidSearchReq;
+import com.example.modulepaidservice.modulepaid.dto.ModulePaidUpdateReq;
 import com.example.modulepaidservice.modulepaid.enums.Status;
 import com.example.modulepaidservice.modulepaid.exception.ApplicationException;
 import com.example.modulepaidservice.modulepaid.model.JpaModulePaid;
@@ -19,6 +20,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import static com.example.modulepaidservice.modulepaid.exception.BusinessErrorCode.ModulePaidErrorCode.*;
@@ -74,10 +76,11 @@ public class ModulePaidServiceImpl implements ModulePaidService {
     }
 
     @Override
-    public Page<ModulePaidRes> search(ModulePaidSearchReq req,  Integer pageNo, Integer pageSize, String sort) {
+    public Page<ModulePaidRes> search(ModulePaidSearchReq req, Integer pageNo, Integer pageSize, String sort, String sortDir) {
         try{
-            String[] sorts = sort.split(":");
-            Pageable paging = sorts[1].toUpperCase().equals("DESC") ? PageRequest.of(pageNo, pageSize, Sort.by(sorts[0]).descending()) : PageRequest.of(pageNo, pageSize, Sort.by(sorts[0]).ascending());
+            pageNo = (Objects.nonNull(pageNo) && pageNo > 0) ? pageNo - 1 : 0;
+
+            Pageable paging = "DESC".equalsIgnoreCase(sortDir) ? PageRequest.of(pageNo, pageSize, Sort.by(sort).descending()) : PageRequest.of(pageNo, pageSize, Sort.by(sort).ascending());
             Page<JpaModulePaid> jpaModulePaidPage = modulePaidRepository.search(
                     req.getOrderNo(),
                     req.getClientTin(),
@@ -109,19 +112,34 @@ public class ModulePaidServiceImpl implements ModulePaidService {
     }
 
     @Override
-    public ModulePaidRes update(Long id, String status) {
+    public ModulePaidRes update(ModulePaidUpdateReq req) {
         try{
-            log.info("[ModulePaidServiceImpl] Start Update module paid with id: {}", id);
-            var jpaModuleOpt = modulePaidRepository.findById(id);
+            log.info("[ModulePaidServiceImpl] Start Update module paid with id: {}", req.getId());
+            var jpaModuleOpt = modulePaidRepository.findById(req.getId());
             if(jpaModuleOpt.isEmpty()){
                 throw new ApplicationException(MODULE_PAID_NOT_FOUND_ERROR);
             }
             JpaModulePaid jpaModulePaid = jpaModuleOpt.get();
-            jpaModulePaid.setStatus(status);
+            jpaModulePaid.setStatus(req.getStatus());
             jpaModulePaid = modulePaidRepository.save(jpaModulePaid);
             return mapper.readValue(mapper.writeValueAsString(jpaModulePaid), ModulePaidRes.class);
         }catch (Exception e){
             log.error("[ModulePaidServiceImpl] Update module paid error: {}",e.getMessage());
+            throw new ApplicationException(MODULE_PAID_SEARCH_ERROR, e.getMessage());
+        }
+    }
+
+    @Override
+    public ModulePaidRes get(Long id) {
+        try {
+            var jpaModuleOpt = modulePaidRepository.findById(id);
+            if (jpaModuleOpt.isEmpty()) {
+                throw new ApplicationException(MODULE_PAID_NOT_FOUND_ERROR);
+            }
+            JpaModulePaid jpaModulePaid = jpaModuleOpt.get();
+            return mapper.readValue(mapper.writeValueAsString(jpaModulePaid), ModulePaidRes.class);
+        } catch (Exception e) {
+            log.error("[ModulePaidServiceImpl] Update module paid error: {}", e.getMessage());
             throw new ApplicationException(MODULE_PAID_SEARCH_ERROR, e.getMessage());
         }
     }
